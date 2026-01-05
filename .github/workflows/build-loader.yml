@@ -17,20 +17,20 @@ jobs:
           distribution: temurin
           java-version: 17
 
-      - name: Debug structure
+      - name: Debug repo structure
         run: |
           pwd
           ls -la
-          ls -la loader || true
+          ls -la loader
 
       - name: Make gradlew executable
-        run: chmod +x ./loader/gradlew
+        run: chmod +x ./gradlew
 
-      - name: Build loader
-        run: ./loader/gradlew build
+      - name: Build loader (Gradle root)
+        run: ./gradlew :loader:build
 
       - name: Upload loader-template.jar
         uses: actions/upload-artifact@v4
         with:
           name: loader-template
-          path: loader/build/libs/loader-template.jar
+          path: loader/build/libs/*.jar
