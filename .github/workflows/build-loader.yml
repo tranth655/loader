@@ -1,0 +1,35 @@
+name: Build Loader Template
+
+on:
+  push:
+    paths:
+      - "loader/**"
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: Make gradlew executable
+        working-directory: loader
+        run: chmod +x gradlew
+
+      - name: Build loader with Gradle
+        working-directory: loader
+        run: ./gradlew build
+
+      - name: Upload loader-template.jar
+        uses: actions/upload-artifact@v4
+        with:
+          name: loader-template
+          path: loader/build/libs/loader-template.jar
